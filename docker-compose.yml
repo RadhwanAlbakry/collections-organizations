@@ -1,0 +1,49 @@
+version: '3.9'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+      - APP_PORT=3000
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=radhwan
+      - DB_NAME=toby_db
+      - DB_HOST=db
+      - DB_PORT=5432
+      - JWT_SECRET_KEY=Radhwan-Toby-Api-Secret-Key
+      - JWT_EXPIRES_IN=90d
+      - GOOGLE_CLIENT_ID=
+      - GOOGLE_CLIENT_SECRET=
+    depends_on: 
+       db:
+        condition: service_healthy
+    restart: always
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  db:
+    container_name: localhost
+    image: postgres:13
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: radhwan
+      POSTGRES_DB: toby_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

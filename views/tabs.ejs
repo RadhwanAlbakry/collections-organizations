@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Open Tabs</title>
+</head>
+<body>
+    <h1>Open Tabs</h1>
+    <ul>
+        <% tabs.forEach(tab => { %>
+            <li><%= tab.url %></li>
+        <% }) %>
+    </ul>
+    <form action="/tabs/add" method="POST">
+        <input type="text" name="url" placeholder="Enter URL" required>
+        <button type="submit">Add Tab</button>
+    </form>
+</body>
+</html>
